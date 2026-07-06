@@ -28,11 +28,41 @@ locals {
   YAML
 }
 
+data "aws_iam_policy_document" "amplify_assume_role" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type = "Service"
+      identifiers = [
+        "amplify.amazonaws.com",
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role" "amplify_service" {
+  name               = "${var.project_name}-amplify-service"
+  assume_role_policy = data.aws_iam_policy_document.amplify_assume_role.json
+
+  tags = local.common_tags
+}
+
+resource "aws_iam_role_policy_attachment" "amplify_service" {
+  role       = aws_iam_role.amplify_service.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
+}
+
 resource "aws_amplify_app" "frontend" {
-  name         = var.project_name
-  repository   = var.github_repository
-  access_token = var.github_access_token
-  platform     = "WEB_COMPUTE"
+  name                 = var.project_name
+  repository           = var.github_repository
+  access_token         = var.github_access_token
+  platform             = "WEB_COMPUTE"
+  iam_service_role_arn = aws_iam_role.amplify_service.arn
 
   enable_branch_auto_build = true
   build_spec               = local.build_spec
@@ -66,4 +96,3 @@ resource "aws_amplify_branch" "environment" {
     }
   )
 }
-
