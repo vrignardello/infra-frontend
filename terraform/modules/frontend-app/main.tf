@@ -34,12 +34,15 @@ data "aws_iam_policy_document" "amplify_assume_role" {
 
     actions = [
       "sts:AssumeRole",
+      "sts:TagSession",
     ]
 
     principals {
       type = "Service"
       identifiers = [
         "amplify.amazonaws.com",
+        "amplifybackend.amazonaws.com",
+        "codebuild.amazonaws.com",
       ]
     }
   }
