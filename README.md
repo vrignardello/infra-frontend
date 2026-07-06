@@ -1,69 +1,36 @@
-# Paraderos Frontend Demo Infra
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Blueprint for a Next.js SSR frontend hosted on AWS Amplify Hosting.
+## Getting Started
 
-This folder is intentionally shaped as a standalone repository.
-
-## Structure
-
-```text
-terraform/
-  amplify/
-  modules/
-    frontend-app/
-```
-
-The Amplify app is managed in a single Terraform state because the app is shared, while branches represent environments:
-
-```text
-develop -> dev
-main    -> prod
-```
-
-## Terraform State
-
-Remote state bucket:
-
-```text
-paraderos-terraform-state-225989346053
-```
-
-State key:
-
-```text
-paraderos-frontend-demo/amplify/terraform.tfstate
-```
-
-## Usage
-
-Login with AWS SSO:
+First, run the development server:
 
 ```bash
-aws sso login --profile paraderos-admin
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Initialize and plan:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-terraform -chdir=terraform/amplify init
-terraform -chdir=terraform/amplify plan
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-Apply when the plan looks correct:
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-```bash
-terraform -chdir=terraform/amplify apply
-```
+## Learn More
 
-## GitHub Token
+To learn more about Next.js, take a look at the following resources:
 
-The Terraform module expects a GitHub token only if Amplify is connected to the repo through Terraform.
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Example:
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-```bash
-export TF_VAR_github_access_token="github_pat_xxx"
-```
+## Deploy on Vercel
 
-For production use, prefer a narrowly scoped token and rotate it if needed.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
